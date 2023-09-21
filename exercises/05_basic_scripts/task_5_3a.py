@@ -12,16 +12,29 @@ VLANа или списка VLANов:
 То есть эту задачу можно решить без использования условия if и циклов for/while.
 """
 
-access_template = [
+mode = input('Введите режим работы интерфейса (access/trunk): ')
+int = input('Введите тип и номер интерфейса: ')
+trac = dict(
+access = 'Введите номер VLAN:', 
+trunk = 'Введите разрешенные VLANы:'
+)
+vlan = input(trac.get(mode))
+conf = dict(
+access = [
     "switchport mode access",
     "switchport access vlan {}",
     "switchport nonegotiate",
     "spanning-tree portfast",
     "spanning-tree bpduguard enable",
 ]
-
-trunk_template = [
+,
+trunk = [
     "switchport trunk encapsulation dot1q",
     "switchport mode trunk",
     "switchport trunk allowed vlan {}",
-]
+])
+
+print('\n')
+print('interface {}'.format(int))
+print('\n'.join(conf.get(mode)).format(vlan))
+
