@@ -12,3 +12,15 @@
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 """
+add = input('Введите адрес в формате X.X.X.X: ')
+addr = add.split('.')
+if 1 <= int(addr[0]) <= 223:
+    print('unicast')
+elif 224 <= int(addr[0]) <= 239:
+    print('multicast')
+elif int(addr[0]) == int(addr[1]) == int(addr[2]) == int(addr[3]) == 255:
+    print('local broadcast')
+elif int(addr[0]) == int(addr[1]) == int(addr[2]) == int(addr[3]) == 0:
+    print('unassigned')
+else:
+    print('unused')
