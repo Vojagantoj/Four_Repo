@@ -15,5 +15,16 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+from sys import argv
+
+config = argv[1]
+result = argv[2]
 
 ignore = ["duplex", "alias", "configuration"]
+
+with open(config) as f, open(result, 'w') as d:
+    for line in f:
+        if line.startswith("!") or line.count("duplex") == 1 or line.count('alias') == 1 or line.count("configuration") == 1:
+            continue
+        else:
+            d.write(line)

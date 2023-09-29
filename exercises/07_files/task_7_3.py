@@ -20,3 +20,14 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+with open('CAM_table.txt') as f:
+    for line in f:
+        if line == '\n':
+            pass
+        else:
+            line = line.split()
+            if line[0].isdigit():
+                line.remove('DYNAMIC')
+                print("{:>15} {:>15} {:>15}".format(line[0], line[1], line[2]))
+            else:
+                continue
