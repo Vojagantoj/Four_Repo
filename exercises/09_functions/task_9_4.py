@@ -40,13 +40,12 @@
         "switchport mode access",
         "switchport access vlan 20",
     ],
-}
+}def get_int_vlan_map(config_filename):
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 """
 
 ignore = ["duplex", "alias", "configuration"]
-
 
 def ignore_command(command, ignore):
     """
@@ -64,3 +63,15 @@ def ignore_command(command, ignore):
         if word in command:
             ignore_status = True
     return ignore_status
+def convert_config_to_dict(config_filename):
+    with open(config_filename) as f:
+        config = dict()
+        for line in f:
+            if line.startswith('!') or line.startswith('\n'):
+                pass
+            elif line.startswith(' ') == False and ignore_command(line, ignore) == False:
+                key = line.rstrip()
+                config[key] = []
+            elif line.startswith(' ') and ignore_command(line, ignore) == False:
+                config[key].append(line[1:].rstrip())
+        return config

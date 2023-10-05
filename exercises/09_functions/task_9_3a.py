@@ -25,3 +25,26 @@
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 """
+def get_int_vlan_map(config_filename):
+    with open(config_filename) as f:
+        trunk = dict()
+        access = dict()
+        rf = list()
+        for line in f:
+            if line.count('Fast') != 0:
+                key = line[line.find('Fast')::].rstrip()
+                access[key] = 1
+            elif line.count('allowed vlan') != 0:
+                value = line[line.find('vlan') + 5::].rstrip().split(',')
+                nw = []
+                for n in value:
+                    nw.append(int(n))
+                trunk.update({key: nw})
+                del access[key]
+            elif line.count('access vlan') != 0:
+                value1 = int(line[line.find('vlan') + 5::].rstrip())
+                access.update({key: value1})
+        rf.append(access)
+        rf.append(trunk)
+        result = tuple(rf)
+    return result

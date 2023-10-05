@@ -36,7 +36,7 @@
 """
 
 
-trunk_mode_template = [
+trunk_template = [
     "switchport mode trunk",
     "switchport trunk native vlan 999",
     "switchport trunk allowed vlan",
@@ -47,3 +47,21 @@ trunk_config = {
     "FastEthernet0/2": [11, 30],
     "FastEthernet0/4": [17],
 }
+
+
+def generate_trunk_config(intf_vlan_mapping,trunk_template):
+    result=[]
+    rw = dict()
+    for key in intf_vlan_mapping:
+        for command in trunk_template:
+            if command.endswith('allowed vlan'):
+                sd = []
+                for x in intf_vlan_mapping.get(key):
+                    sd.append(str(x))
+                sd = ','.join(sd)
+                result.append(command + ' {}'.format(sd))
+            else:
+                result.append(command)
+            rw[key] = result
+        result=[]
+    return rw

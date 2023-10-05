@@ -21,5 +21,27 @@
 
 Проверить работу функции на примере файла config_sw1.txt
 
-Ограничение: Все задания надо выполнять используя только пройденные темы.
+Ограничение: Все задconfig_sw1ания надо выполнять используя только пройденные темы.
 """
+
+def get_int_vlan_map(config_filename):
+    with open(config_filename) as f:
+        trunk = dict()
+        access = dict()
+        rf = list()
+        for line in f:
+            if line.count('Fast') != 0:
+                key = line[line.find('Fast')::].rstrip()
+            elif line.count('allowed vlan') != 0:
+                value = line[line.find('vlan') + 5::].rstrip().split(',')
+                nw = []
+                for n in value:
+                    nw.append(int(n))
+                trunk[key] = nw
+            elif line.count('access vlan') != 0:
+                value1 = int(line[line.find('vlan') + 5::].rstrip())
+                access[key] = value1
+        rf.append(access)
+        rf.append(trunk)
+        result = tuple(rf)
+    return result
