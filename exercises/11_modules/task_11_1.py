@@ -43,8 +43,31 @@ def parse_cdp_neighbors(command_output):
     и с файлами и с выводом с оборудования.
     Плюс учимся работать с таким выводом.
     """
+    data = command_output.split('\n')
+    i = 0
+    key = []
+    value = []
 
-
+    for i in range(len(data)):
+        k = data[i].split()
+        if len(k) == 0:
+            i += 1
+            continue
+        elif k[0].find('>') > 0:
+            name_router = k[0][:k[0].find('>')]
+            i += 1
+            continue
+        elif k[0].isalpha() == True:
+            i += 1
+            pass
+        else:
+            key.append((name_router, k[1] + k[2]))
+            value.append((k[0], k[-2] + k[-1]))
+            i += 1
+    result = dict(zip(key, value))
+    return result
 if __name__ == "__main__":
     with open("sh_cdp_n_sw1.txt") as f:
         print(parse_cdp_neighbors(f.read()))
+
+
